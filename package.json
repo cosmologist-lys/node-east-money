@@ -19,6 +19,8 @@
     "bufferhelper":"*",
     "iconv-lite":"*",
     "q":"*",
+    "cheerio":"*",
+    "crawler":"1.0.5",
     "express-session":"1.15.1",
     "connect-mongo":"1.3.2",
     "baidu-ocr-api":"2.0.5",

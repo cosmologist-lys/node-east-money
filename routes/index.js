@@ -1,16 +1,21 @@
 var express = require('express');
 var router = express.Router();
 let pro = require('../utils/promiseHelper');
+const kfg = require('../kfg.js');
+let Crawler = require('crawler');
 
 const http = require('http');
-const URL = require('url').parse('http://data.eastmoney.com/report/hyyb.html');
+const urlHelper = require('url');
 var iconv = require('iconv-lite');
 var BufferHelper = require('bufferhelper');
+
 router.use((req,res,next) =>{
 	let url = req.url;
 	if (url != '/') res.redirect('/');
 	next();
 });
+
+
 function prom(url) {
 	return new Promise((resolved,reject)=>{
 		http.get(url,(res)=>{
@@ -28,11 +33,30 @@ function prom(url) {
 	})
 }
 
+function crawler(selector,url) {
+	return new Promise( (resolved,reject) =>{
+		let c = new Crawler({
+			maxConnections : 10,
+			callback : function (error, res, done) {
+				if(error){
+					reject(error);
+				}else{
+					let $ = res.$;
+					let ctx = $(selector).text().trim();
+					resolved(ctx);
+				}
+				done();
+			}
+		});
+		c.queue(url);
+	})
+}
+
 router.get('/', function(req, res, next) {
-	prom(URL).then((ctx)=>{
+	let selector = "#dt_1";
+	crawler(selector,kfg.url).then((ctx)=>{
 		res.render('index', { title: 'Crawler',ctx:ctx});
-	});
-	//32
+	})
 });
 
 module.exports = router;
