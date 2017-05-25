@@ -2,8 +2,12 @@
    <button class="btn btn-success btn-lg btn-block"></button>
    <h1><%=title%></h1>
    <div class="col-sm-5">
-      <textarea name="content"  class="form-control" rows="30" cols="800" placeholder="input your content here">
-         <%=ctx%>
+      <textarea name="content"  class="form-control" rows="30" cols="800" >
+         <% if(ctx){ %>
+          <% ctx.forEach(function (c){ %>
+         <%= c.ratc%>
+         <% })} %>
       </textarea>
    </div>
 <% include footer.html %>
+

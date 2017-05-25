@@ -2,12 +2,13 @@ var express = require('express');
 var router = express.Router();
 let pro = require('../utils/promiseHelper');
 const kfg = require('../kfg.js');
-let Crawler = require('crawler');
+
 const httpHelper = require('../utils/httpHelper');
-var mongoose = require('mongoose');
+/*var mongoose = require('mongoose');
 var Buck = require('../models/Bucks').Demo;
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/east-money');
+mongoose.connect('mongodb://localhost/east-money');*/
+const cheerio = require('cheerio');
 
 
 router.use((req,res,next) =>{
@@ -16,33 +17,14 @@ router.use((req,res,next) =>{
 	next();
 });
 
-
-function crawler(selector,url) {
-	return new Promise( (resolved,reject) =>{
-		let c = new Crawler({
-			maxConnections : 10,
-			callback : function (error, res, done) {
-				if(error){
-					reject(error);
-				}else{
-					let $ = res.$;
-					//let ctx = $(selector).text().trim();
-					let ctx = $(selector).children().html();
-					resolved(ctx);
-				}
-				done();
-			}
-		});
-		c.queue(url);
-	})
-}
-
 router.get('/', function(req, res, next) {
 	pro.getPromise(kfg.url).then((ctx)=>{
-		const result = pro.parseHTML(ctx);
-		res.render('index',{title:'Crawler',ctx:result})
+		let result = pro.getInfo(ctx);
+		//result = pro.getDetail(result);
+		//console.log(result.update+' '+result.count+' '+result.pages);
+		let models = pro.getModel(result);
+		res.render('index',{title:'Crawler',ctx:models})
 	});
-
 });
 
 module.exports = router;
