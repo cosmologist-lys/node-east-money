@@ -59,7 +59,7 @@ let promiseHelper = {
 	getModel: function (info,str) {//得到每个对象
 		let onlyInfo = info[0];
 		let onlyInfoSplit = onlyInfo.split('\","');
-		console.error(onlyInfoSplit)
+		//console.error(onlyInfoSplit)打印
 		let list = [];
 		for(let o in onlyInfoSplit){
 			let model =[];
@@ -80,8 +80,6 @@ let promiseHelper = {
 			}
 			list.push(model);
 		}
-		console.log(onlyInfoSplit.length);
-		//let result = $.text().replace(/[ ]+/g,' ');
 		return list;
 	},
 
@@ -89,7 +87,7 @@ let promiseHelper = {
 		if (info == undefined) throw new Error('pack function cannot take undefined params');
 
 	},
-	getCrawler : function (selector,url) {
+	getCrawler : function (url) {
 	return new Promise( (resolved,reject) =>{
 		let c = new Crawler({
 			maxConnections : 10,
@@ -97,18 +95,51 @@ let promiseHelper = {
 				if(error){
 					reject(error);
 				}else{
-					//let A = res.$;
-					const $ = cheerio.load(res.$.text());
-					console.log($.html());
-					let ctx = $(selector).html();
-					resolved(ctx);
+					let $ = res.$;
+					resolved($);
 				}
 				done();
 			}
 		});
 		c.queue(url);
-	})
-}
+	})},
+	getSinger_Album : function ($,selector) {//得到歌手和专辑信息
+		if ($ == undefined || $ == '') throw new Error('$ is null baby');
+		return new Promise((reso,reje)=>{
+			var msc = [];
+			$(selector).each(function(i, elem) {
+				let songInfo = $(this).attr().alt;
+				songInfo = songInfo.split('-');
+				const singer = songInfo[0];
+				const album = songInfo[1];
+				const piece = {
+					'singer':singer,
+					'album':album
+				};
+				msc[i] = piece;
+			});
+			reso(msc);
+		})
+	},
+	getRating_or_Pl : function ($,selector) {//得到打分和评价人数信息
+		if ($ == undefined || $ == '') throw new Error('$ is null baby');
+		return new Promise((reso,reje)=>{
+			var msc = [];
+			$(selector).each(function(i, elem) {
+				let info = $(this).text().trim();
+				if (info.length >3){
+					//评价人数
+					let reg = /\d+/g;//提取数字
+					info = info.match(reg);
+				}else{
+					//打分
+					info = info.trim();
+				}
+				msc[i] = info;
+			});
+			reso(msc);
+		})
+	}
 };
 
 module.exports = promiseHelper;

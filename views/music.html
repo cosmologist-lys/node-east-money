@@ -1,0 +1,39 @@
+<% include header.html %>
+<button class="btn btn-success btn-lg btn-block"></button>
+<h1><%=title%></h1>
+<div class="col-sm-5">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>no.</th>
+                <th>singer</th>
+                <th>album</th>
+                <th>rating</th>
+                <th>pl</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if(music){%>
+            <% music.forEach(function (mu,i){ %>
+            <tr>
+                <td><%=i+1%></td>
+                <td><%=mu.singer%></td>
+                <td><%=mu.album%></td>
+                <td><%=mu.rating%></td>
+                <td><%=mu.pl%></td>
+            </tr>
+            <% }) }else{%>
+            <tr>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+            </tr>
+            <%}%>
+            </tbody>
+        </table>
+    </div>
+</div>
+<% include footer.html %>

@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var session =  require('express-session');
 
 var index = require('./routes/index');
+let doubanMusic = require('./routes/doubanMusic');
 
 var app = express();
 var ejs = require('ejs');
@@ -32,6 +33,7 @@ app.use(session({
 }));
 
 app.use('/', index);
+app.use('/dbm',doubanMusic);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

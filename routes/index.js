@@ -13,7 +13,6 @@ const cheerio = require('cheerio');
 
 router.use((req,res,next) =>{
 	let url = req.url;
-	if (url != '/') res.redirect('/');
 	next();
 });
 
