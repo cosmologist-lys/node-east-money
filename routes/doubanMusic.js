@@ -14,7 +14,7 @@ router.get('/',function (req, res) {
 	    rating_sel = kfg.douban_getRating,
 	        pl_sel = kfg.douban_getPl,
 		douban_url = kfg.doubanMusicTop250Url;
-	console.time('总耗时：');
+	console.time('总耗时');
 	let allMsc = [],
 	    m1,m2,m3;
 	for(let i = 0;i<10;i++){
@@ -39,10 +39,13 @@ router.get('/',function (req, res) {
 				let musicBox = mu.packMusic_onePage(m1,m2,m3);
 				allMsc.push(musicBox);
 				if (allMsc.length == 10){
-					let box = mu.packMusic_allPage(allMsc);
-					box = mu.bubbleSort(box);
-					console.timeEnd('总耗时：');
-					res.render('music',{title:'Music Top 250',music:box})
+					const box =
+						mu.bubbleSort(
+							mu.packMusic_allPage(allMsc)
+						);
+					console.timeEnd('总耗时');
+					res.render('music',
+						{title:'Music Top 250',music:box,statis:''})
 				}
 			}
 		})

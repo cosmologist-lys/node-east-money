@@ -1,6 +1,7 @@
 <% include header.html %>
 <button class="btn btn-success btn-lg btn-block"></button>
 <h1><%=title%></h1>
+<div>
 <div class="col-sm-5">
     <div>
         <table class="table">
@@ -36,4 +37,43 @@
         </table>
     </div>
 </div>
+<div class="col-sm-5" style="float: left">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>no.</th>
+                <th>singer</th>
+                <th>albums</th>
+                <th>aveRating</th>
+                <th>avepl</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if(statis){%>
+            <% statis.forEach(function (st,j){ %>
+            <tr>
+                <td><%=j+1%></td>
+                <td><%=st.singer%></td>
+                <td><%=st.albumCnt%></td>
+                <td><%=st.avgRating%></td>
+                <td><%=st.avgPl%></td>
+            </tr>
+            <% }) }else{%>
+            <tr>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+            </tr>
+            <%}%>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<style>
+    div{margin:0 auto}
+</style>
 <% include footer.html %>

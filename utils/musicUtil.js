@@ -34,19 +34,55 @@ const musicHelper = {
 		}
 		return box;
 	},
-	bubbleSort : function(box){
+	bubbleSort : function(box,dir = 'desc'){
 		for(var i=0;i<box.length-1;i++){
 			for(var j=i+1;j<box.length;j++){
 				const m1 = Number(box[i].rating)*10;
 				const m2 = Number(box[j].rating)*10;
-				if(m1<m2){
-					var temp=box[i];
-					box[i]=box[j];
-					box[j]=temp;
+				if (dir.toUpperCase() == 'DESC'){
+					if(m1<m2){
+						var temp=box[i];
+						box[i]=box[j];
+						box[j]=temp;
+					}
+				}
+				if (dir.toUpperCase() == 'ASC'){
+					if(m1>m2){
+						var temp=box[i];
+						box[i]=box[j];
+						box[j]=temp;
+					}
 				}
 			}
 		}
 		return box;
+	},
+	statis : function (box) {
+		const statisBox = [];
+		for(let i=0;i<box.length;i++){
+			let name = box[i].singer;
+			let count = 1;
+			let totalRating = Number(box[i].rating);
+			let totalPL = Number(box[i].pl);
+			for(let j=i+1;j<box.length;j++){
+				if (name == box[j].singer) {
+					count++;
+					totalRating += box[j].rating;
+					totalPL += box[j].pl;
+					box.pop(box[j]);box.pop(box[i]);
+				}
+			}
+			console.error('第'+i+'次：'+box.length)
+			count = 0?1:count;
+			const statis = {
+				singer:name,
+				albumCnt : count,
+				avgRating : totalRating/count,
+				avgPl : totalPL/count
+			};
+			statisBox.push(statis);
+		}
+		return statisBox;
 	}
 };
 
